@@ -1,10 +1,10 @@
 package com.rt_fo.api.auth.controller;
 
-import com.rt_fo.api.auth.dto.AuthenticatedUserDto;
 import com.rt_fo.api.auth.dto.LoginRequest;
 import com.rt_fo.api.auth.dto.TokenResponse;
 import com.rt_fo.api.security.jwt.JwtProvider;
 import com.rt_fo.api.security.jwt.JwtService;
+import com.rt_fo.api.user.dto.UserDto;
 import com.rt_fo.api.user.entity.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +48,9 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<AuthenticatedUserDto> getAuthenticatedUser(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<UserDto> getAuthenticatedUser(@AuthenticationPrincipal Jwt jwt) {
         User user = jwtService.getUserFromJwt(jwt);
 
-        return ResponseEntity.ok(AuthenticatedUserDto.fromEntity(user));
+        return ResponseEntity.ok(UserDto.fromEntity(user));
     }
 }
