@@ -12,6 +12,8 @@ public interface ArticleRequest {
 
     List<Integer> tagIds();
 
+    List<Integer> factoryIds();
+
     Boolean authorVisible();
 
     String content();

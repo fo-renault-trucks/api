@@ -1,6 +1,7 @@
 package com.rt_fo.api.user.service;
 
 import com.rt_fo.api.user.dto.request.UserCreationRequest;
+import com.rt_fo.api.user.dto.request.UserRequest;
 import com.rt_fo.api.user.dto.request.UserUpdateRequest;
 import com.rt_fo.api.user.entity.User;
 import com.rt_fo.api.user.exception.EmailInUseException;
@@ -34,9 +35,8 @@ public class UserService {
         User user = new User();
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
-        user.setRole(request.role());
+
+        fillEntity(user, request);
 
         return userRepository.save(user);
     }
@@ -45,9 +45,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        user.setFirstName(request.firstName());
-        user.setLastName(request.lastName());
-        user.setRole(request.role());
+        fillEntity(user, request);
 
         return userRepository.save(user);
     }
@@ -57,5 +55,11 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         userRepository.delete(user);
+    }
+
+    private void fillEntity(User user, UserRequest request) {
+        user.setFirstName(request.firstName());
+        user.setLastName(request.lastName());
+        user.setRole(request.role());
     }
 }

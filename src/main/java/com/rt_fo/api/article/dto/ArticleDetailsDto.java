@@ -2,6 +2,7 @@ package com.rt_fo.api.article.dto;
 
 import com.rt_fo.api.article.entity.Article;
 import com.rt_fo.api.article.entity.ArticleStatus;
+import com.rt_fo.api.factory.entity.Factory;
 import com.rt_fo.api.tag.entity.Tag;
 
 import java.time.Instant;
@@ -14,6 +15,7 @@ public record ArticleDetailsDto(
         String subTitle,
         Integer categoryId,
         List<Integer> tagIds,
+        List<Integer> factoryIds,
         AuthorDto author,
         Boolean authorVisible,
         String content,
@@ -28,6 +30,7 @@ public record ArticleDetailsDto(
                 article.getSubTitle(),
                 article.getCategory().getId(),
                 article.getTags().stream().map(Tag::getId).toList(),
+                article.getFactories().stream().map(Factory::getId).toList(),
                 AuthorDto.fromEntity(article.getAuthor()),
                 article.isAuthorVisible(),
                 article.getContent(),

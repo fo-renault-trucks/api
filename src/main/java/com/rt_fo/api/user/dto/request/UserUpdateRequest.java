@@ -8,6 +8,6 @@ public record UserUpdateRequest(
         @NotBlank(message = "firstName is mandatory") String firstName,
         @NotBlank(message = "lastName is mandatory") String lastName,
         @NotNull(message = "role is mandatory") Role role
-) {
+) implements UserRequest {
 
 }

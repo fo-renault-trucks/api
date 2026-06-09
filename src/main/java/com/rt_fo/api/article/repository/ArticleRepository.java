@@ -27,12 +27,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<ArticleDto> findAllDtos();
 
     @Query("""
-        SELECT DISTINCT a
+        SELECT a
         FROM Article a
-        JOIN FETCH a.category
-        JOIN FETCH a.author
         LEFT JOIN FETCH a.tags
+        LEFT JOIN FETCH a.factories
         WHERE a.id = :id
     """)
-    Optional<Article> findByIdWithTags(@Param("id") Long id);
+    Optional<Article> findByIdWithTagsAndFactories(@Param("id") Long id);
 }

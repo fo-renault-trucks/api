@@ -10,6 +10,8 @@ import com.rt_fo.api.article.exception.ArticleNotFoundException;
 import com.rt_fo.api.article.repository.ArticleRepository;
 import com.rt_fo.api.category.entity.Category;
 import com.rt_fo.api.category.service.CategoryService;
+import com.rt_fo.api.factory.entity.Factory;
+import com.rt_fo.api.factory.service.FactoryService;
 import com.rt_fo.api.tag.entity.Tag;
 import com.rt_fo.api.tag.service.TagService;
 import com.rt_fo.api.user.entity.User;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ArticleService {
@@ -24,15 +27,18 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final CategoryService categoryService;
     private final TagService tagService;
+    private final FactoryService factoryService;
 
     public ArticleService(
             ArticleRepository articleRepository,
             CategoryService categoryService,
-            TagService tagService
+            TagService tagService,
+            FactoryService factoryService
     ) {
         this.articleRepository = articleRepository;
         this.categoryService = categoryService;
         this.tagService = tagService;
+        this.factoryService = factoryService;
     }
 
     public List<ArticleDto> getArticles() {
@@ -40,7 +46,7 @@ public class ArticleService {
     }
 
     public Optional<Article> getArticleById(Long id) {
-        return articleRepository.findByIdWithTags(id);
+        return articleRepository.findByIdWithTagsAndFactories(id);
     }
 
     public Article createArticle(ArticleCreationRequest request, User author) {
@@ -105,8 +111,12 @@ public class ArticleService {
         article.setCategory(category);
 
         // Set tags
-        List<Tag> tags = tagService.getTagsById(request.tagIds());
+        Set<Tag> tags = tagService.getTagsById(request.tagIds());
         article.setTags(tags);
+
+        // Set factories
+        Set<Factory> factories = factoryService.getFactoriesById(request.factoryIds());
+        article.setFactories(factories);
 
         article.setContent(request.content());
         article.setAuthorVisible(request.authorVisible());
