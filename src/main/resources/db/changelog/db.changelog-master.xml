@@ -6,4 +6,5 @@
 >
     <include file="db/changelog/001-create-user-and-role-tables.xml"/>
     <include file="db/changelog/002-create-article-schema.xml"/>
+    <include file="db/changelog/003-create-factory-schema.xml"/>
 </databaseChangeLog>

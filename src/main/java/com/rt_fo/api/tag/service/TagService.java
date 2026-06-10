@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class TagService {
         return tagRepository.findAllWithReferenced();
     }
 
-    public List<Tag> getTagsById(List<Integer> ids) {
+    public Set<Tag> getTagsById(List<Integer> ids) {
         Map<Integer, Tag> tags = tagRepository.findAllById(ids)
                 .stream()
                 .collect(Collectors.toMap(Tag::getId, Function.identity()));
@@ -39,7 +40,7 @@ public class TagService {
             throw new TagNotFoundException(unknownTagIds);
         }
 
-        return List.copyOf(tags.values());
+        return Set.copyOf(tags.values());
     }
 
     public Tag createTag(String name) {

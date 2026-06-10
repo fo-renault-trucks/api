@@ -1,6 +1,7 @@
 package com.rt_fo.api.article.entity;
 
 import com.rt_fo.api.category.entity.Category;
+import com.rt_fo.api.factory.entity.Factory;
 import com.rt_fo.api.tag.entity.Tag;
 import com.rt_fo.api.user.entity.User;
 import jakarta.persistence.Column;
@@ -19,8 +20,8 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "articles")
@@ -51,7 +52,15 @@ public class Article {
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "article_factories",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "factory_id")
+    )
+    private Set<Factory> factories = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
@@ -116,12 +125,20 @@ public class Article {
         this.category = category;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Set<Factory> getFactories() {
+        return factories;
+    }
+
+    public void setFactories(Set<Factory> factories) {
+        this.factories = factories;
     }
 
     public User getAuthor() {
